@@ -1,0 +1,59 @@
+context:
+  version: "2026.10.24"
+  arch: rv64gc
+  abi: lp64d
+
+package:
+  name: riscv-gnu-toolchain-elf
+  version: ${{ version }}
+
+# No `source:`: build.sh runs the checkout's configure in place, and the
+# Makefile pulls the submodules it needs on demand.
+
+build:
+  number: 0
+  script:
+    file: build.sh
+    env:
+      TC_ARCH: ${{ arch }}
+      TC_ABI: ${{ abi }}
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - make
+    - ccache
+    - curl
+    - git
+    - python
+    - tomli
+    - gawk
+    - sed
+    - m4
+    - bison
+    - flex
+    - texinfo
+    - gperf
+    - bc
+    - util-linux
+  host:
+    - gmp
+    - mpfr
+    - mpc
+    - zlib
+    - zstd
+
+tests:
+  - script:
+      - riscv64-unknown-elf-gcc --version
+      - riscv64-unknown-elf-gcc -print-multi-lib
+      - echo 'int main(void){return 0;}' > t.c
+      - riscv64-unknown-elf-gcc -march=rv64gc -mabi=lp64d t.c -o t64
+      - riscv64-unknown-elf-gcc -march=rv32imac -mabi=ilp32 t.c -o t32
+
+about:
+  homepage: https://github.com/MemIR-Project/riscv-gnu-toolchain
+  license: GPL-3.0-or-later
+  license_file: LICENSE
+  summary: RISC-V GNU bare-metal (newlib) cross toolchain, multilib

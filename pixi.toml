@@ -1,0 +1,56 @@
+[workspace]
+name = "riscv-gnu-toolchain"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+# Build prerequisites from README.md (apt name -> conda-forge name)
+[dependencies]
+# build-essential
+c-compiler = "*"
+cxx-compiler = "*"
+make = "*"
+ccache = "*"
+# autoconf automake autotools-dev libtool
+autoconf = "*"
+automake = "*"
+libtool = "*"
+# curl git python3 python3-pip python3-tomli
+curl = "*"
+git = "*"
+python = "*"
+pip = "*"
+tomli = "*"
+# libmpc-dev libmpfr-dev libgmp-dev
+mpc = "*"
+mpfr = "*"
+gmp = "*"
+# gawk bison flex texinfo gperf patchutils bc
+gawk = "*"
+bison = "*"
+flex = "*"
+texinfo = "*"
+gperf = "*"
+patch = "*"  # patchutils is not on conda-forge for linux
+bc = "*"
+# zlib1g-dev libexpat-dev libzstd-dev libncurses-dev
+zlib = "*"
+expat = "*"
+zstd = "*"
+ncurses = "*"
+# meson ninja-build cmake libglib2.0-dev expect device-tree-compiler libslirp-dev
+meson = "*"
+ninja = "*"
+cmake = "*"
+glib = "*"
+expect = "*"
+dtc = "*"
+libslirp = "*"
+# implicit tools used by configure/Makefile
+sed = "*"
+m4 = "*"
+util-linux = "*"
+# packaging
+rattler-build = "*"
+
+[tasks]
+build-conda = "rattler-build build --recipe recipe/recipe.yaml -c conda-forge --output-dir dist"
